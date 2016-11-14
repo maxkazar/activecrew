@@ -1,8 +1,8 @@
-# Activecommand
+# ActiveCrew
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/activecrew`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+[![Gem Version](https://badge.fury.io/rb/activecrew.svg)](https://badge.fury.io/rb/activecrew)
+[![Code Climate](https://codeclimate.com/github/maxkazar/activecrew/badges/gpa.svg)](https://codeclimate.com/github/maxkazar/activecrew)
+[![Build Status](https://travis-ci.org/maxkazar/activecrew.svg)](https://travis-ci.org/maxkazar/activecrew)
 
 ## Installation
 
