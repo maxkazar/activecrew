@@ -4,10 +4,10 @@ module ActiveCrew
       include Sidekiq::Worker
 
       class << self
-        def enqueue(*args)
+        def enqueue(name, invoker, context)
           Sidekiq::Client.push 'class' => self,
-                               'queue' => queue_name(args.first),
-                               'args' => args
+                               'queue' => queue_name(name),
+                               'args' => [YAML.dump([name, invoker, normalize(context)])]
         end
 
         def queue_name(command_name)
@@ -17,10 +17,16 @@ module ActiveCrew
         def queue(command_name)
           Sidekiq::Queue.new queue_name command_name
         end
+
+        private
+
+        def normalize(context)
+          context.merge(options: context.fetch(:options, {}).to_hash).to_hash
+        end
       end
 
-      def perform(*args)
-        ActiveCrew::Backends.dequeue *args
+      def perform(context)
+        ActiveCrew::Backends.dequeue *YAML.load(context)
       end
     end
   end
