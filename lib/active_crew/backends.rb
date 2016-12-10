@@ -18,7 +18,7 @@ module ActiveCrew
 
       def dequeue(name, invoker, *args)
         command = create_command name, deserialize(invoker), *args
-        command.execute if command.can_execute?
+        command.execute if command && command.can_execute?
       end
 
       private
@@ -38,7 +38,7 @@ module ActiveCrew
       def create_command(name, invoker, *args)
         "#{name.classify}Command".constantize.new invoker, *args
       rescue NameError
-        raise ArgumentError, "Unsupported command #{name} for active command."
+        raise ArgumentError, "Unsupported command #{name} for active command." unless ActiveCrew.configuration.silent
       end
     end
   end
