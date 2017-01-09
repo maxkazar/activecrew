@@ -5,6 +5,12 @@ module ActiveCrew
         def size
           0
         end
+
+        def method_missing(method, *args, &block)
+          return unless respond_to? method
+
+          super method, *args, &block
+        end
       end
 
       def self.enqueue(*args)
