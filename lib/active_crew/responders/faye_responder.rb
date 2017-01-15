@@ -63,7 +63,8 @@ module ActiveCrew
         return { base: model.message } if model.is_a? CommandError
 
         if model.is_a?(Array) || model.errors.empty?
-          ActiveModelSerializers::SerializableResource.new(model, options).serializable_hash
+          resource = ActiveModelSerializers::SerializableResource.new(model, options)
+          resource.adapter.respond_to?(:serializable_hash) ? resource.serializable_hash : model
         else
           ActiveModelSerializers::SerializableResource.new(model.errors, options.merge(root: 'errors')).serializable_hash[:errors]
         end
