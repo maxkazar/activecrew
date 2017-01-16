@@ -12,8 +12,6 @@ module ActiveCrew
 
     def execute
       super
-    rescue Interrupt
-      raise
     rescue CommandError
       respond_with $ERROR_INFO
     end
