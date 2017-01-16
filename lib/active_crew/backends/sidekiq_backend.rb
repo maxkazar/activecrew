@@ -18,6 +18,10 @@ module ActiveCrew
           Sidekiq::Queue.new queue_name command_name
         end
 
+        def context
+          Sidekiq::Processor::WORKER_STATE[Thread.current.object_id.to_s(36)]
+        end
+
         private
 
         def normalize(context)

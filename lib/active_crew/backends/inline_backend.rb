@@ -13,12 +13,18 @@ module ActiveCrew
         end
       end
 
-      def self.enqueue(*args)
-        ActiveCrew::Backends.dequeue *args
-      end
+      class << self
+        def enqueue(*args)
+          ActiveCrew::Backends.dequeue *args
+        end
 
-      def self.queue(command_name)
-        Queue.new
+        def queue(command_name)
+          Queue.new
+        end
+
+        def context
+          {}
+        end
       end
     end
   end
