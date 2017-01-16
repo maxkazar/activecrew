@@ -62,7 +62,7 @@ module ActiveCrew
       def serialize(model, options = {})
         return { base: model.message } if model.is_a? CommandError
 
-        if model.is_a?(Array) || model.errors.empty?
+        if model.is_a?(Array) || !model.respond_to?(:errors) || model.errors.empty?
           resource = ActiveModelSerializers::SerializableResource.new(model, options)
           resource.adapter.respond_to?(:serializable_hash) ? resource.serializable_hash : model
         else
@@ -71,7 +71,7 @@ module ActiveCrew
       end
 
       def status(model)
-        model.is_a?(Array) || !model.is_a?(CommandError) && model.valid? ? :success : :failure
+        !model.is_a?(CommandError) && (!model.respond_to?(:valid?) || model.valid?) ? :success : :failure
       end
 
       # @return Faye request header
