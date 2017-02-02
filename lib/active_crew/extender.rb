@@ -1,9 +1,8 @@
 module ActiveCrew
   module Extender
     def command(name, options)
-      context = { options: options }
+      context = { options: options, session: request.headers['x-session-token'] }
 
-      ActiveCrew::Responders.init context, request
       ActiveCrew::Backends.enqueue name, current_user, context
     end
   end

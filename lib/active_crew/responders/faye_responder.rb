@@ -1,25 +1,20 @@
 module ActiveCrew
   module Responders
-    # FayeResponderError class.
-    class FayeResponderError < Exception; end
-
-    # FayeConnectionError class.
-    class FayeConnectionError < Exception; end
-
     # ActiveCrew Faye responder.
     module FayeResponder
+
+      # FayeResponderError class.
+      class FayeResponderError < Exception; end
+
       module_function
 
       MAX_RETRIES = 5
 
-      def init(context, request)
-        context[:session] = request.headers['x-session-token']
-      end
-
       # Respond with faye
-      def respond(name, invoker, context, model)
-        request channel: channel(invoker),
-                data: payload(name, invoker, context, model),
+      # Respond with faye
+      def respond(name, invoker, options, model)
+        request channel: channel(invoker, options),
+                data: payload(name, invoker, options, model),
                 ext: { publish_key: config[:publish_key] }
       end
 
@@ -30,24 +25,23 @@ module ActiveCrew
           validate RestClient.post url, message.to_json, header
         rescue FayeResponderError
           retries += 1
-          raise FayeConnectionError $ERROR_INFO unless retries < MAX_RETRIES
 
-          retry
-        rescue FayeConnectionError
-          Rails.logger.fatal $ERROR_INFO.message
+          retry if retries < MAX_RETRIES
+
+          Rails.logger.fatal "[#{self}] #{$ERROR_INFO.message}"
         end
       end
 
       # @return Invoker channel name
-      def channel(invoker)
-        "/#{invoker.class.to_s.underscore}/#{invoker.id}"
+      def channel(invoker, options)
+        options[:channel] || "/#{invoker.class.to_s.underscore}/#{invoker.id}"
       end
 
       # @return Faye request payload
-      def payload(name, invoker, context, model)
+      def payload(name, invoker, options, model)
         {
           invoker: serialize_invoker(invoker),
-          session: context[:session],
+          session: options[:session],
           command: name,
           status: status(model),
           response: serialize(model)
