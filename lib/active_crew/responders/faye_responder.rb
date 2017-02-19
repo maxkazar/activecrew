@@ -86,7 +86,7 @@ module ActiveCrew
       end
 
       def url
-        "http://#{config[:host]}/faye"
+        "#{config[:ssl] ? 'https' : 'http'}://#{config[:host]}/faye"
       end
 
       def config
