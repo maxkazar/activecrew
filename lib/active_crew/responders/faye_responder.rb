@@ -60,7 +60,7 @@ module ActiveCrew
           resource = ActiveModelSerializers::SerializableResource.new(model, options)
           resource.adapter.respond_to?(:serializable_hash) ? resource.serializable_hash : model
         else
-          ActiveModelSerializers::SerializableResource.new(model.errors, options.merge(root: 'errors')).serializable_hash[:errors]
+          ActiveModelSerializers::SerializableResource.new(model.errors, root: 'errors').serializable_hash[:errors]
         end
       end
 
