@@ -65,7 +65,7 @@ module ActiveCrew
       end
 
       def status(model)
-        !model.is_a?(CommandError) && (!model.respond_to?(:valid?) || model.valid?) ? :success : :failure
+        !model.is_a?(CommandError) && (!model.respond_to?(:errors) || model.errors.empty?) ? :success : :failure
       end
 
       # @return Faye request header
