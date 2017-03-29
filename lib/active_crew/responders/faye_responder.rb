@@ -44,7 +44,7 @@ module ActiveCrew
           session: options[:session],
           command: name,
           status: status(model),
-          response: serialize(model)
+          response: serialize(model, options)
         }
       end
 
@@ -57,7 +57,9 @@ module ActiveCrew
         return { base: model.message } if model.is_a? CommandError
 
         if model.is_a?(Array) || !model.respond_to?(:errors) || model.errors.empty?
-          resource = ActiveModelSerializers::SerializableResource.new(model, options)
+          # SerializableResource need only symbolize options
+          options = options.slice(:serializer, :each_serializer).symbolize_keys
+          resource = ActiveModelSerializers::SerializableResource.new model, options
           resource.adapter.respond_to?(:serializable_hash) ? resource.serializable_hash : model
         else
           ActiveModelSerializers::SerializableResource.new(model.errors, root: 'errors').serializable_hash[:errors]
