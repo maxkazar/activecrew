@@ -3,7 +3,7 @@ module ActiveCrew
     extend ActiveSupport::Concern
 
     def can_execute?
-      invoker.can? name, options
+      invoker.can? name, self
     end
   end
 end
