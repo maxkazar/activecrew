@@ -8,7 +8,7 @@ module ActiveCrew
       context = {
         options: options,
         session: request.headers['x-session-token']
-      }.merge(context: command_context)
+      }.merge command_context
 
       ActiveCrew::Backends.enqueue name, current_user, context
     end

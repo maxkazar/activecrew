@@ -20,7 +20,7 @@ RSpec.describe ActiveCrew::Extender do
     end
 
     it 'enqueue command' do
-      expect(ActiveCrew::Backends).to receive(:enqueue).with(command, current_user, options: options, session: session_id, context: {} )
+      expect(ActiveCrew::Backends).to receive(:enqueue).with(command, current_user, options: options, session: session_id )
       subject.command command, options
     end
   end
