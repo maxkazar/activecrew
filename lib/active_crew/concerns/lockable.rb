@@ -15,6 +15,8 @@ module ActiveCrew
     end
 
     def lock(model)
+      return unless model
+
       locker_was = context[:locker]
       context[:locker] = serialize_locker model
 
