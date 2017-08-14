@@ -10,4 +10,5 @@ RSpec.describe ActiveCrew::Base do
   it_behaves_like 'active_crew/respondable'
   it_behaves_like 'active_crew/commandable'
   it_behaves_like 'active_crew/combinable'
+  it_behaves_like 'active_crew/lockable'
 end
