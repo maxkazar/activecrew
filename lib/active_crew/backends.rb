@@ -17,7 +17,10 @@ module ActiveCrew
       end
 
       def dequeue(name, invoker, *args)
-        command = create_command name, deserialize(invoker), *args
+        invoker = deserialize invoker
+        return if invoker.blank?
+
+        command = create_command name, invoker, *args
         command.execute if command && command.can_execute?
       end
 
