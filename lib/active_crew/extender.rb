@@ -5,12 +5,10 @@ module ActiveCrew
     end
 
     def command(name, options = {})
-      context = {
-        options: options,
-        session: request.headers['x-session-token']
-      }.merge command_context
+      context = { options: options }
+      context[:session] = request.headers['x-session-token'] if respond_to? :request
 
-      ActiveCrew::Backends.enqueue name, current_user, context
+      ActiveCrew::Backends.enqueue name, current_user, context.merge(command_context)
     end
   end
 end
