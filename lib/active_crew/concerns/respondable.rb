@@ -3,6 +3,7 @@ module ActiveCrew
 
   module Respondable
     def respond_with(model, options = {})
+      name = options.delete(:name) || self.name
       Responders.respond_with name, invoker, context.merge(options), model
     end
 
