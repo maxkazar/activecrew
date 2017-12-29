@@ -20,6 +20,10 @@ module ActiveCrew
         invoker = deserialize invoker
         return if invoker.blank?
 
+        command name, invoker, *args
+      end
+
+      def command(name, invoker, *args)
         command = create_command name, invoker, *args
         command.execute if command && command.can_execute?
       end
