@@ -19,7 +19,7 @@ module ActiveCrew
         end
 
         def context
-          Sidekiq::Processor::WORKER_STATE[Thread.current.object_id.to_s(36)]
+          Sidekiq::Processor::WORKER_STATE[Sidekiq::Logging.tid]
         end
 
         private
