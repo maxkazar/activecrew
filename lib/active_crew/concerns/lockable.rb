@@ -5,10 +5,10 @@ module ActiveCrew
     end
 
     def locked?
-      options = context[:locker]
+      options = context.delete :locker
       return false if options.blank?
 
-      model = deserialize_locker
+      model = deserialize_locker options
       return true if model.blank?
 
       model.locker != options[:value]
@@ -33,9 +33,8 @@ module ActiveCrew
         value: model.lock }
     end
 
-    def deserialize_locker
-      locker = context[:locker]
-      locker[:class].safe_constantize&.find locker[:id]
+    def deserialize_locker(options)
+      options[:class].safe_constantize&.find options[:id]
     end
   end
 end
