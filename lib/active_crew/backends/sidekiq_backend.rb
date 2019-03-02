@@ -19,7 +19,7 @@ module ActiveCrew
         end
 
         def context
-          Sidekiq::Processor::WORKER_STATE[Sidekiq::Logging.tid]
+          Sidekiq::Processor::WORKER_STATE.dup[Sidekiq::Logging.tid]
         end
 
         private
