@@ -29,6 +29,8 @@ module ActiveCrew
           retry if retries < MAX_RETRIES
 
           Rails.logger.fatal "[#{self}] #{$ERROR_INFO.message}"
+        rescue Exception
+          Rails.logger.fatal "[#{self}] #{$ERROR_INFO.message}"
         end
       end
 
