@@ -22,7 +22,6 @@ module ActiveCrew
     prepend Combinable
     prepend Validatable
     prepend Measurable
-    prepend Respondable
     prepend Authorizable
     prepend Lockable
 

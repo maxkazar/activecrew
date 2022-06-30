@@ -19,7 +19,8 @@ module ActiveCrew
         end
 
         def context
-          Sidekiq::Processor::WORKER_STATE.dup[Sidekiq::Logging.tid]
+          tid = Thread.current["sidekiq_tid"] ||= (Thread.current.object_id ^ ::Process.pid).to_s(36)
+          Sidekiq::Processor::WORK_STATE.dup[tid]
         end
 
         private
@@ -30,7 +31,7 @@ module ActiveCrew
       end
 
       def perform(context)
-        ActiveCrew::Backends.dequeue *YAML.load(context)
+        ActiveCrew::Backends.dequeue *YAML.unsafe_load(context)
       end
     end
   end

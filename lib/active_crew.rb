@@ -8,12 +8,10 @@ require 'active_crew/concerns/chainable'
 require 'active_crew/concerns/commandable'
 require 'active_crew/concerns/combinable'
 require 'active_crew/concerns/lockable'
-require 'active_crew/concerns/respondable'
 require 'active_crew/concerns/measurable'
 require 'active_crew/concerns/validatable'
 require 'active_crew/base'
 require 'active_crew/backends'
-require 'active_crew/responders'
 
 require 'active_crew/extender' if defined? ActionController
 
@@ -25,7 +23,7 @@ module ActiveCrew
     # Returns the global [Configuration](ActiveCrew/Configuration) object.
     #
     # @example
-    #     ActiveCrew.configuration.responder = :pusher
+    #     ActiveCrew.configuration.backend = :inline
     def configuration
       @configuration ||= ActiveCrew::Configuration.new
     end
@@ -35,13 +33,12 @@ module ActiveCrew
     #
     # @example
     #     ActiveCrew.configure do |config|
-    #       config.responder = :fayer
+    #       config.backend = :inline
     #     end
     def configure
       yield configuration if block_given?
 
       Backends.create
-      Responders.create
     end
   end
 end
