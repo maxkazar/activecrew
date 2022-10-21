@@ -2,12 +2,12 @@ module ActiveCrew
   module Validatable
     extend ActiveSupport::Concern
 
-    def validate!
-
+    def validate
+      true
     end
 
     def execute
-      validate!
+      return unless validate
 
       super
     end
